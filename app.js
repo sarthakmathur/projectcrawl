@@ -4,80 +4,101 @@ var fs = require('fs');
 const express = require('express');
 var router = express.Router();
 var http =require('http');
-
-
-var app= express();
-var images=[];
-
-var alljson=[];
-var ot=[];
-var ot2=[];
-function per(callback){
-    for(i=1;i<=1;i++){
-        var url1="https://www.sehat.com/india/hospitals?srchhosps=noida&page="+i;
-request(url1, function(error, response, responseHtml){        
-
+var where = require('node-where');
+var sleep = require('sleep');
+//var geocoder = require('geocoder');
+var allk=[];
+var b1=-1;
+function ouputfile(err, data) {
+    if (err) throw err
+    obj = JSON.parse(data)
+    var m=Object.keys(obj).length
     
-     
+    for(i=0;i<15;i++)
+    {
+        var t=obj[i].name;
+        const b = t+' '+'Noida';
+        setTimeout(function(){
+            ;
+         where.is(b, function(err, result) {
+          if (result) {
 
-        
-        var $ = cheerio.load(responseHtml);
-        var allRecords = $('div.listing');
-    allRecords.each(function(index, element){ 
-    var urlk    = $(element).find('a.hospitalurl').attr('href');
-    var title = $(element).find('a.hospitalurl span').text();
-    var  location  = $(element).find('p.address').text().trim();         
-    function done(cb){
-            if(urlk!=undefined)
-            {
-                 var ot=[];
-                 var ot2=[];
-                 request(urlk, function(error, response, responseHtml){        
-                 var $ = cheerio.load(responseHtml,);
-                 var a =$('ul[class="list-unstyled"] li[itemprop="MedicalSpecialty"] span').each(function() { ot2.push($(this).text()) });;
-                 var b1 =$('div[class="cheSN-lists 2-column"] li').each(function() { ot.push($(this).text()) });
-                 
+             console.log(b);
+             b1=b1+1;
+             
+            console.log(result.get('lat'),result.get('lng'));
+            console.log(b1);
+            
+            
+            obj[b1].lat=result.get('lat');
+            obj[b1].lng=result.get('lng');
+            allk.push(obj[b1]);
+            
 
-
-
-                 cb();
-                 console.log(ot2);
-                 console.log('csacscac');
-                 console.log(c1);
-                 console.log('\n');
-                
-                 console.log(ot);
-                 console.log('\n');
-                 console.log('\n');
-                 var temp={
-                           name :title,
-                           address: location,
-                           speciality :ot2,
-                           services : ot    
-                          }
-                 alljson.push(temp);
-
-                 });
-            }
+       }
+        }); },i*1000);
+            
      }
-         
-      done(function cb(){
-         console.log(urlk);
-         console.log(title);  
-         console.log(location);
-         console.log('\n');
-            });
+   
+     for(i=15;i<70;i++)
+    {
+        var t=obj[i].name;
+        const b = t+' '+'Noida';
+        setTimeout(function(){
+         where.is(b, function(err, result) {
+          if (result) {
+             console.log(b);
+             b1=b1+1;
+             console.log(result.get('lat'),result.get('lng'));
+             obj[b1].lat=result.get('lat');
+             obj[b1].lng=result.get('lng');
+             allk.push(obj[b1]);
 
-  });
-        
-    });
-}
-}
-  per();
-   setTimeout(function()
-    { 
-       fs.writeFile('ouput.json',JSON.stringify( alljson), function(err){  
+       }
+        }); },i*1000);
+            
+     }
+    for(i=70;i<100;i++)
+    {
+        var t=obj[i].name;
+        const b = t+' '+'Noida';
+        setTimeout(function(){
+         where.is(b, function(err, result) {
+          if (result) {
+             console.log(b);
+             b1=b1+1;
+             console.log(result.get('lat'),result.get('lng'));
+             obj[b1].lat=result.get('lat');
+             obj[b1].lng=result.get('lng');
+             allk.push(obj[b1]);
+
+       }
+        }); },i*1000);
+            
+     }
+     for(i=100;i<m;i++)
+    {
+        var t=obj[i].name;
+        const b = t+' '+'Noida';
+        setTimeout(function(){
+         where.is(b, function(err, result) {
+          if (result) {
+             console.log(b);
+             b1=b1+1;
+             console.log(result.get('lat'),result.get('lng'));
+             obj[b1].lat=result.get('lat');
+             obj[b1].lng=result.get('lng');
+             allk.push(obj[b1]);
+
+       }
+        }); },i*1000);
+            
+     }
+     setTimeout(function () {
+    fs.writeFile('ouput1.json',JSON.stringify( allk), function(err){  
     console.log('successfully saved');
-    })
-    }
-    , 40000);
+});
+},i*1001);
+    
+}
+fs.readFile('./output.json', 'utf8',ouputfile);
