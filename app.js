@@ -13,6 +13,7 @@ function ouputfile(err, data) {
     if (err) throw err
     obj = JSON.parse(data)
     var m=Object.keys(obj).length
+    console.log(data);
     
     for(i=0;i<15;i++)
     {
